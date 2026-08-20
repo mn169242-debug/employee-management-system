@@ -80,6 +80,32 @@ const getEmployees = async (req, res) => {
   }
 };
 
+const getEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Thử tìm theo _id của bảng Employee trước
+    let employee = await Employee.findById(id).populate("department");
+
+    // Nếu không thấy, thử tìm tiếp bằng trường userId (dành cho trường hợp nhân viên tự xem profile)
+    if (!employee) {
+      employee = await Employee.findOne({ userId: id }).populate("department");
+    }
+
+    if (!employee) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Employee not found" });
+    }
+
+    return res.status(200).json({ success: true, employee });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, error: "Get employee server error" });
+  }
+};
+
 const deleteEmployee = async (req, res) => {
   try {
     const { id } = req.params;
@@ -102,18 +128,6 @@ const deleteEmployee = async (req, res) => {
     return res
       .status(500)
       .json({ success: false, error: "Server error deleting employee" });
-  }
-};
-
-const getEmployee = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const employee = await Employee.findById(id).populate("department");
-    return res.status(200).json({ success: true, employee });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, error: "Get employee server error" });
   }
 };
 
