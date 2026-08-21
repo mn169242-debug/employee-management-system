@@ -7,7 +7,9 @@ import {
   FaBuilding,
   FaSignOutAlt,
   FaMoneyBill,
+  FaCalendarAlt,
 } from "react-icons/fa";
+
 import { useAuth } from "../../contexts/authContext";
 const Slidebar = () => {
   const { user } = useAuth();
@@ -47,13 +49,17 @@ const Slidebar = () => {
           </NavLink>
 
           <NavLink
-            to={"/employee-dashboard"}
-            className="flex items-center space-x-4 block py-2.5 px-4 rounded"
+            to={"/employee-dashboard/leaves"}
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-teal-500 text-white" : " "
+              }flex items-center space-x-4 block py-2.5 px-4 rounded`
+            }
+            end
           >
-            <FaSignOutAlt />
+            <FaCalendarAlt />
             <span>Leaves</span>
           </NavLink>
-
           <NavLink
             to={"/employee-dashboard/salaries"}
             className={({ isActive }) =>
@@ -68,8 +74,13 @@ const Slidebar = () => {
           </NavLink>
 
           <NavLink
-            to={"/employee-dashboard"}
-            className="flex items-center space-x-4 block py-2.5 px-4 rounded"
+            to={"/employee-dashboard/setting"}
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-teal-500 text-white" : " "
+              }flex items-center space-x-4 block py-2.5 px-4 rounded`
+            }
+            end
           >
             <IoSettings />
             <span>Setting</span>

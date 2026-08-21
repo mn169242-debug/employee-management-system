@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const salarySchema = new mongoose.Schema({
   employeeId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Employee",
+    ref: "User",
     required: true,
   },
   month: { type: Number, required: true }, // Tháng (1-12)

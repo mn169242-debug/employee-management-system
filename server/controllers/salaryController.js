@@ -78,3 +78,26 @@ export const getSalaries = async (req, res) => {
     });
   }
 };
+export const getSalaryByEmployeeId = async (req, res) => {
+  try {
+    const { id } = req.params; // id này là employeeId
+
+    // Dùng .find({ employeeId: id }) kết hợp .populate nếu muốn lấy thêm thông tin
+    const salaries = await Salary.find({ employeeId: id }).populate(
+      "employeeId",
+      "name email",
+    );
+
+    return res.status(200).json({
+      success: true,
+      salaries,
+    });
+  } catch (error) {
+    console.error("Lỗi khi lấy lịch sử lương:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Lỗi server nội bộ",
+      error: error.message,
+    });
+  }
+};
