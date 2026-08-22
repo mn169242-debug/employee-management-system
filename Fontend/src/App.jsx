@@ -20,6 +20,7 @@ import Profile from "./component/EmployeeDashboard/Profile.jsx";
 import LeaveList from "./component/Leave/List.jsx";
 import LeaveAdd from "./component/Leave/Add.jsx";
 import ListSalary from "./component/SalaryEmplooyee/List.jsx";
+import Setting from "./component/SettingEmployee/Setting.jsx";
 function App() {
   return (
     // 1. Đổi thành BrowserRouter
@@ -72,6 +73,7 @@ function App() {
           <Route path="leaves" element={<LeaveList />} />
           <Route path="add-leave" element={<LeaveAdd />} />
           <Route path="salaries" element={<ListSalary />} />
+          <Route path="setting" element={<Setting />} />
         </Route>
       </Routes>
     </BrowserRouter>

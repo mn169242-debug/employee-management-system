@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 import fs from "fs";
 import Employee from "../models/Employee.js";
 import User from "../models/User.js";
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/uploads");
@@ -84,10 +83,8 @@ const getEmployee = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Thử tìm theo _id của bảng Employee trước
     let employee = await Employee.findById(id).populate("department");
 
-    // Nếu không thấy, thử tìm tiếp bằng trường userId (dành cho trường hợp nhân viên tự xem profile)
     if (!employee) {
       employee = await Employee.findOne({ userId: id }).populate("department");
     }
@@ -160,6 +157,78 @@ const updateEmployee = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  try {
+    const userId = req.user?._id || req.user?.id;
+    const userEmail = req.user?.email;
+
+    if (!userId && !userEmail) {
+      return res
+        .status(401)
+        .json({ success: false, error: "Token không hợp lệ!" });
+    }
+
+    const { oldPassword, newPassword } = req.body;
+    if (!oldPassword || !newPassword) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          error: "Vui lòng nhập đầy đủ mật khẩu cũ và mới!",
+        });
+    }
+
+    // 1. Tìm trong bảng Employee trước
+    let employee = await Employee.findById(userId).catch(() => null);
+    if (!employee && userEmail) {
+      employee = await Employee.findOne({ email: userEmail });
+    }
+
+    if (!employee) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Không tìm thấy tài khoản nhân viên!" });
+    }
+
+    // 2. Tìm trong bảng User (bảng dùng để đăng nhập) theo email
+    const user = await User.findOne({ email: employee.email || userEmail });
+    if (!user) {
+      return res
+        .status(404)
+        .json({
+          success: false,
+          error: "Không tìm thấy tài khoản User tương ứng để đăng nhập!",
+        });
+    }
+
+    // 3. Kiểm tra mật khẩu cũ dựa trên bảng User (hoặc Employee)
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Mật khẩu cũ không chính xác!" });
+    }
+
+    // 4. Mã hóa mật khẩu mới
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(newPassword, salt);
+
+    // 5. Cập nhật mật khẩu mới cho CẢ HAI bảng để đồng bộ tuyệt đối
+    user.password = hashPassword;
+    await user.save();
+
+    employee.password = hashPassword;
+    await employee.save();
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Đổi mật khẩu thành công!" });
+  } catch (error) {
+    console.error("LỖI ĐỔI MẬT KHẨU:", error);
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 export {
   addEmployee,
   upload,
@@ -167,4 +236,5 @@ export {
   getEmployee,
   updateEmployee,
   deleteEmployee,
+  changePassword, // Thêm export này vào
 };
