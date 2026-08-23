@@ -59,7 +59,7 @@ const AdminSlidebar = () => {
           </NavLink>
 
           <NavLink
-            to={"/admin-dashboard"}
+            to={"/admin-dashboard/leaves"}
             className="flex items-center space-x-4 block py-2.5 px-4 rounded"
           >
             <FaSignOutAlt />
@@ -80,7 +80,7 @@ const AdminSlidebar = () => {
           </NavLink>
 
           <NavLink
-            to={"/admin-dashboard"}
+            to={"/admin-dashboard/setting"}
             className="flex items-center space-x-4 block py-2.5 px-4 rounded"
           >
             <IoSettings />

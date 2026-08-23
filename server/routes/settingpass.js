@@ -1,24 +1,29 @@
 import express from "express";
-import { login, verify } from "../controllers/authControler.js";
-import authMiddleWare from "../middleware/authMiddleWare.js";
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
+import authMiddleWare from "../middleware/authMiddleWare.js";
 
 const router = express.Router();
 
-router.post("/login", login);
-router.get("/verify", authMiddleWare, verify);
-
-// Đưa logic đổi mật khẩu vào chung authRouter luôn để tránh lỗi 404
 router.put("/change-password", authMiddleWare, async (req, res) => {
   try {
     const { userId, oldPassword, newPassword } = req.body;
 
+    // In log để kiểm tra userId client gửi lên
+    console.log("Server nhận được userId từ client gửi lên là:", userId);
+
+    if (!userId) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Thiếu userId truyền lên!" });
+    }
+
     const user = await User.findById(userId);
     if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, error: "Không tìm thấy tài khoản!" });
+      return res.status(404).json({
+        success: false,
+        error: "Không tìm thấy tài khoản quản trị viên!",
+      });
     }
 
     const isMatch = await bcrypt.compare(oldPassword, user.password);

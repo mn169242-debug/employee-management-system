@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios"; // Đảm bảo đã import axios
+import axios from "axios";
 
 const Setting = () => {
   const [formData, setFormData] = useState({
@@ -41,10 +41,20 @@ const Setting = () => {
         return;
       }
 
-      // Gọi API trực tiếp không cần nối đuôi ID trên URL nữa
+      // Lấy userId từ localStorage
+      const user = JSON.parse(localStorage.getItem("user"));
+      const userId = user ? user._id : null;
+
+      if (!userId) {
+        setError("Không tìm thấy thông tin tài khoản!");
+        return;
+      }
+
+      // Gọi API đổi mật khẩu với đúng dữ liệu từ formData
       const response = await axios.put(
-        "http://localhost:5000/api/employee/change-password",
+        "http://localhost:5000/api/setting/change-password",
         {
+          userId: userId,
           oldPassword: formData.oldPassword,
           newPassword: formData.newPassword,
         },
@@ -78,14 +88,12 @@ const Setting = () => {
         Cài đặt tài khoản & Hệ thống
       </h2>
 
-      {/* Hiển thị thông báo thành công */}
       {message && (
         <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-md text-sm font-medium">
           {message}
         </div>
       )}
 
-      {/* Hiển thị thông báo lỗi */}
       {error && (
         <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm font-medium">
           {error}
@@ -93,7 +101,6 @@ const Setting = () => {
       )}
 
       <form onSubmit={handleSaveSettings} className="space-y-6">
-        {/* Phần Đổi mật khẩu */}
         <div className="border-b pb-6">
           <h3 className="text-lg font-semibold text-gray-700 mb-4">
             Đổi mật khẩu
@@ -143,7 +150,6 @@ const Setting = () => {
           </div>
         </div>
 
-        {/* Phần Tùy chọn hệ thống */}
         <div>
           <h3 className="text-lg font-semibold text-gray-700 mb-4">
             Tùy chọn hiển thị & Thông báo
@@ -179,7 +185,6 @@ const Setting = () => {
           </div>
         </div>
 
-        {/* Nút lưu */}
         <div className="flex justify-end pt-4 border-t">
           <button
             type="submit"
