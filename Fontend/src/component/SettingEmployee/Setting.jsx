@@ -52,7 +52,7 @@ const Setting = () => {
 
       // Gọi API đổi mật khẩu với đúng dữ liệu từ formData
       const response = await axios.put(
-        "http://localhost:5000/api/setting/change-password",
+        "import.meta.env.VITE_API_URL || 'http://localhost:5000/api/setting/change-password",
         {
           userId: userId,
           oldPassword: formData.oldPassword,

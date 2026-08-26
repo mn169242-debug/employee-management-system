@@ -15,13 +15,16 @@ export default function Add() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/leave/add", {
-        employeeId: user._id, // Lấy ID của nhân viên đang đăng nhập
-        leaveType,
-        startDate,
-        endDate,
-        reason,
-      });
+      const response = await axios.post(
+        "import.meta.env.VITE_API_URL || 'http://localhost:5000/api/leave/add",
+        {
+          employeeId: user._id, // Lấy ID của nhân viên đang đăng nhập
+          leaveType,
+          startDate,
+          endDate,
+          reason,
+        },
+      );
 
       if (response.data.success) {
         alert("Gửi đơn thành công!");

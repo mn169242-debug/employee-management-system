@@ -11,11 +11,14 @@ const SalaryList = () => {
     const fetchSalaries = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:5000/api/salary", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const response = await axios.get(
+          "import.meta.env.VITE_API_URL || 'http://localhost:5000/api/salary",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        });
+        );
 
         if (response.data.success) {
           setSalaries(response.data.salaries);

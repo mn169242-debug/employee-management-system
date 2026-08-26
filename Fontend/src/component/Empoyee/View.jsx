@@ -13,7 +13,7 @@ const View = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/employee/${id}`,
+          `import.meta.env.VITE_API_URL || 'http://localhost:5000/api/employee/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -46,7 +46,7 @@ const View = () => {
         {/* Ảnh đại diện */}
         <div className="flex justify-center">
           <img
-            src={`http://localhost:5000/uploads/${employee.image}`}
+            src={`import.meta.env.VITE_API_URL || 'http://localhost:5000/uploads/${employee.image}`}
             alt={employee.name}
             className="w-40 h-40 rounded-full object-cover border-4 border-teal-600 shadow"
           />

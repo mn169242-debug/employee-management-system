@@ -13,11 +13,14 @@ const List = () => {
     const fetchEmployees = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/api/employee", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        const response = await axios.get(
+          "import.meta.env.VITE_API_URL || 'http://localhost:5000/api/employee",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           },
-        });
+        );
 
         if (response.data.success) {
           setEmployees(response.data.employees);
@@ -45,7 +48,7 @@ const List = () => {
     if (confirm) {
       try {
         const response = await axios.delete(
-          `http://localhost:5000/api/employee/${id}`,
+          `import.meta.env.VITE_API_URL || 'http://localhost:5000/api/employee/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -87,7 +90,7 @@ const List = () => {
       name: "Image",
       cell: (row) => (
         <img
-          src={`http://localhost:5000/uploads/${row.image}`}
+          src={`import.meta.env.VITE_API_URL || 'http://localhost:5000/uploads/${row.image}`}
           alt={row.name}
           className="w-10 h-10 rounded-full object-cover my-1"
         />

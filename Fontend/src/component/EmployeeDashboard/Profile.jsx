@@ -30,7 +30,7 @@ const Profile = () => {
         }
 
         const response = await axios.get(
-          `http://localhost:5000/api/employee/${targetId}`,
+          `import.meta.env.VITE_API_URL || 'http://localhost:5000/api/employee/${targetId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -102,7 +102,7 @@ const Profile = () => {
           <div className="relative">
             {employee.image ? (
               <img
-                src={`http://localhost:5000/uploads/${employee.image}`}
+                src={`import.meta.env.VITE_API_URL || 'http://localhost:5000/uploads/${employee.image}`}
                 alt={employee.name}
                 className="w-44 h-44 rounded-full object-cover border-4 border-teal-500 shadow-lg"
               />

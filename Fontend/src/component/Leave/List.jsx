@@ -12,7 +12,7 @@ export default function List() {
       // Đảm bảo user._id tồn tại trước khi gọi API
       if (!user || !user._id) return;
       const response = await axios.get(
-        `http://localhost:5000/api/leave/${user._id}`,
+        `import.meta.env.VITE_API_URL || 'http://localhost:5000/api/leave/${user._id}`,
       );
       if (response.data.success) {
         setLeaves(response.data.leaves);

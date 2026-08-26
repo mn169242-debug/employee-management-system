@@ -10,7 +10,7 @@ const LeaveList = () => {
       console.log("Token hiện tại:", token); // Kiểm tra xem có token không
 
       const response = await axios.get(
-        "http://localhost:5000/api/leave/admin/all",
+        "import.meta.env.VITE_API_URL || 'http://localhost:5000/api/leave/admin/all",
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -37,7 +37,7 @@ const LeaveList = () => {
   const changeStatus = async (id, status) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/leave/${id}`,
+        `import.meta.env.VITE_API_URL || 'http://localhost:5000/api/leave/${id}`,
         { status },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

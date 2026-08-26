@@ -12,7 +12,7 @@ const DeparmentList = () => {
     const fetchDepartments = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/department",
+          "import.meta.env.VITE_API_URL || 'http://localhost:5000/api/department",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

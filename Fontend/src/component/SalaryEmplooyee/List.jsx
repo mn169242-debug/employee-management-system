@@ -10,7 +10,7 @@ export default function SalaryList() {
     try {
       if (!user || !user._id) return;
       const response = await axios.get(
-        `http://localhost:5000/api/salary/${user._id}`,
+        `import.meta.env.VITE_API_URL || 'http://localhost:5000/api/salary/${user._id}`,
       );
       if (response.data.success) {
         // Hỗ trợ cả 2 trường hợp tên biến trả về từ backend

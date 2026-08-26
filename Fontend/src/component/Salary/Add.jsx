@@ -25,11 +25,14 @@ export default function AddSalary() {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await axios.get("http://localhost:5000/api/employee", {
-          headers: {
-            Authorization: `Bearer ${token}`, // Gửi kèm token để xác thực
+        const response = await axios.get(
+          "import.meta.env.VITE_API_URL || 'http://localhost:5000/api/employee",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Gửi kèm token để xác thực
+            },
           },
-        });
+        );
 
         if (response.data.success) {
           setEmployees(response.data.employees || response.data.data || []);
@@ -54,7 +57,7 @@ export default function AddSalary() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:5000/api/salary",
+        "import.meta.env.VITE_API_URL || 'http://localhost:5000/api/salary",
         formData,
         {
           headers: {
